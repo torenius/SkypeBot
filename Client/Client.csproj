@@ -75,6 +75,9 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="InputDialog.resx">
+      <DependentUpon>InputDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PeriodicMessage\PeriodicMessageControl.resx">
       <DependentUpon>PeriodicMessageControl.cs</DependentUpon>
     </EmbeddedResource>
