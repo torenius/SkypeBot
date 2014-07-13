@@ -1,7 +1,6 @@
 ﻿using Client.PeriodicMessage;
 using Client.SkypeStuff;
 using SkypeBot.WCF;
-using System.ServiceModel;
 using System.Windows.Forms;
 using System;
 
@@ -11,6 +10,7 @@ namespace Client
     {
         private SkypeControl sc;
         private PeriodicMessageControl pm;
+        private ConnectToServer _cts;
 
         public Form1()
         {
@@ -23,7 +23,12 @@ namespace Client
             pm = (PeriodicMessageControl)tabControl1.TabPages[1].Controls["periodicMessageControl1"];
 
             tabControl1.Selected += tabControl1_Selected;
-            //ConnectToServer();
+
+            _cts = new ConnectToServer();
+            _cts.ConnectCompleted += _cts_ConnectCompleted;
+            _cts.StartConnect();
+
+            MessageBox.Show(Application.LocalUserAppDataPath);
         }
 
         /// <summary>
@@ -47,60 +52,31 @@ namespace Client
             Refresh();
         }
 
-        private ISkypeBot StartWCFClient(string ip, string port)
+        /// <summary>
+        /// Event när anslutning antigen har lyckats eller misslyckats.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void _cts_ConnectCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
-            ISkypeBot sb = null;
-            try
+            if (e.Cancelled || e.Error != null)
             {
-                ChannelFactory<ISkypeBot> tcpFactory =
-                    new ChannelFactory<ISkypeBot>(
-                        new NetTcpBinding(SecurityMode.None),
-                        new EndpointAddress("net.tcp://" + ip + ":" + port + "/SkypeBot"));
-
-                sb = tcpFactory.CreateChannel();
-                
-                // Kontrollerar att det finns en anslutning
-                sb.ping();
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine(e);
-                return null;
-            }
-
-            return sb;
-        }
-
-        private void ConnectToServer()
-        {
-            ISkypeBot sb = StartWCFClient("localhost", "14445");
-            //ISkypeBot sb = StartWCFClient("haj", "14445");
-            //if (sb == null)
-            //{
-            //    ShowInputDialog();
-            //    sb = StartWCFClient("localhost", "14445");
-            //}
-
-            sc.SetSkypeHandler(sb);
-            pm.SetPeriodicMessage(sb);
-        }
-
-        private void ShowInputDialog()
-        {
-            using (InputDialog d = new InputDialog())
-            {
-                if (d.ShowDialog(this) == DialogResult.OK)
+                MessageBox.Show("Could not connect to server!\nClosing application.");
+                if (e.Error != null)
                 {
-                    Console.WriteLine("OK");
+                    Console.WriteLine("Connect to server error: " + e.Error.Message);
                 }
+                this.Close();
+                return;
             }
-            //Output parameterar med ip och port. Returnerar true om man ska försöka igen, false om programet ska stängas ner.
-        }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            BeginInvoke((Action)(() => { ConnectToServer(); }));
-        }
+            ISkypeBot sb = e.Result as ISkypeBot;
 
+            if (sb != null)
+            {
+                sc.SetSkypeHandler(sb);
+                pm.SetPeriodicMessage(sb);
+            }
+        }
     }
 }

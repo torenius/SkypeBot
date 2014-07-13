@@ -95,7 +95,6 @@
             this.Controls.Add(this.tabControl1);
             this.Name = "Form1";
             this.Text = "SkypeBot";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);

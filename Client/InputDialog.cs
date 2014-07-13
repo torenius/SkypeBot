@@ -25,9 +25,16 @@ namespace Client
             MessageLabel.Text = message;
         }
 
-        public InputDialog(string message, string okButton, string cancelButton)
+        public InputDialog(string message, string input)
             : this(message)
         {
+            InputBox.Text = input;            
+        }
+
+        public InputDialog(string message, string input, string title, string okButton, string cancelButton)
+            : this(message, input)
+        {
+            this.Text = title;
             OkButton.Text = okButton;
             CancelButton.Text = cancelButton;
         }
@@ -62,6 +69,17 @@ namespace Client
         private void CancelButton_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
+            this.Close();
+        }
+
+        /// <summary>
+        /// Motsvarar att användaren trycker på Ok.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void InputBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            this.DialogResult = DialogResult.OK;
             this.Close();
         }
     }

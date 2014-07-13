@@ -36,24 +36,25 @@
             // 
             // MessageLabel
             // 
-            this.MessageLabel.AutoSize = true;
-            this.MessageLabel.Location = new System.Drawing.Point(162, 9);
+            this.MessageLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.MessageLabel.Location = new System.Drawing.Point(0, 0);
             this.MessageLabel.Name = "MessageLabel";
-            this.MessageLabel.Size = new System.Drawing.Size(50, 13);
+            this.MessageLabel.Size = new System.Drawing.Size(252, 88);
             this.MessageLabel.TabIndex = 0;
             this.MessageLabel.Text = "Message";
             this.MessageLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // InputBox
             // 
-            this.InputBox.Location = new System.Drawing.Point(27, 45);
+            this.InputBox.Location = new System.Drawing.Point(12, 28);
             this.InputBox.Name = "InputBox";
-            this.InputBox.Size = new System.Drawing.Size(322, 20);
+            this.InputBox.Size = new System.Drawing.Size(228, 20);
             this.InputBox.TabIndex = 1;
+            this.InputBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.InputBox_KeyPress);
             // 
             // OkButton
             // 
-            this.OkButton.Location = new System.Drawing.Point(68, 71);
+            this.OkButton.Location = new System.Drawing.Point(12, 54);
             this.OkButton.Name = "OkButton";
             this.OkButton.Size = new System.Drawing.Size(75, 23);
             this.OkButton.TabIndex = 2;
@@ -63,7 +64,7 @@
             // 
             // CancelButton
             // 
-            this.CancelButton.Location = new System.Drawing.Point(225, 71);
+            this.CancelButton.Location = new System.Drawing.Point(165, 53);
             this.CancelButton.Name = "CancelButton";
             this.CancelButton.Size = new System.Drawing.Size(75, 23);
             this.CancelButton.TabIndex = 3;
@@ -75,7 +76,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(377, 112);
+            this.ClientSize = new System.Drawing.Size(252, 88);
             this.Controls.Add(this.CancelButton);
             this.Controls.Add(this.OkButton);
             this.Controls.Add(this.InputBox);

@@ -115,6 +115,8 @@ namespace Client.SkypeStuff
         /// </summary>
         public void PopulateChatListView()
         {
+            if (_skypeHandler == null) return;
+
             Console.WriteLine("populate chat");
             ChatListView.Items.Clear();
 

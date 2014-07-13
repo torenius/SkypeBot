@@ -19,8 +19,6 @@ namespace Client.PeriodicMessage
             DeleteButton.Enabled = false;
             TitleBox.Focus();
 
-            // Dummy för att klienten inte ska krasha
-            _pm = new PeriodicMessageMockup();
             _pmsList = new BindingList<PeriodicMessageSetting>();
             PeriodicMessageListbox.DataSource = _pmsList;
         }
@@ -37,6 +35,8 @@ namespace Client.PeriodicMessage
         /// </summary>
         public void PopulatePeriodicMessageListbox()
         {
+            if (_pm == null) return;
+
             Console.WriteLine("Populate PeriodicMessage");
 
             _pmsList = new BindingList<PeriodicMessageSetting>(_pm.GetAllPeriodicMessages());
