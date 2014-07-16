@@ -144,6 +144,7 @@ namespace Client.PeriodicMessage
         /// Hjälpmetod för att inte behöva göra samma sak på flera ställen.
         /// </summary>
         /// <param name="pm">Objekt som ska uppdatreras.</param>
+        /// <returns>True om allt gick bra, False om något failade</returns>
         private bool UpdateValuesFromFields(PeriodicMessageSetting pm)
         {
             string errorMessage = string.Empty;

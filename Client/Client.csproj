@@ -45,6 +45,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutomaticReply\AutomaticReplyControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AutomaticReply\AutomaticReplyControl.Designer.cs">
+      <DependentUpon>AutomaticReplyControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConnectToServer.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -72,6 +78,9 @@
     <Compile Include="SkypeStuff\SkypeControl.Designer.cs">
       <DependentUpon>SkypeControl.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="AutomaticReply\AutomaticReplyControl.resx">
+      <DependentUpon>AutomaticReplyControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

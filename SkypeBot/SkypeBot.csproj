@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutomaticReply\AutomaticReplySetting.cs" />
+    <Compile Include="AutomaticReply\IAutomaticReply.cs" />
     <Compile Include="PeriodicMessage\IPeriodicMessage.cs" />
     <Compile Include="PeriodicMessage\PeriodicMessageSetting.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

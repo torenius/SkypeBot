@@ -33,15 +33,19 @@
             this.skypeControl1 = new Client.SkypeStuff.SkypeControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.periodicMessageControl1 = new Client.PeriodicMessage.PeriodicMessageControl();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.automaticReplyControl1 = new Client.AutomaticReply.AutomaticReplyControl();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -87,6 +91,25 @@
             this.periodicMessageControl1.Size = new System.Drawing.Size(586, 332);
             this.periodicMessageControl1.TabIndex = 0;
             // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.automaticReplyControl1);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(592, 338);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "tabPage3";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // automaticReplyControl1
+            // 
+            this.automaticReplyControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.automaticReplyControl1.Location = new System.Drawing.Point(3, 3);
+            this.automaticReplyControl1.Name = "automaticReplyControl1";
+            this.automaticReplyControl1.Size = new System.Drawing.Size(586, 332);
+            this.automaticReplyControl1.TabIndex = 0;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -98,6 +121,7 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
+            this.tabPage3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -109,6 +133,8 @@
         private System.Windows.Forms.TabPage tabPage2;
         private SkypeStuff.SkypeControl skypeControl1;
         private PeriodicMessage.PeriodicMessageControl periodicMessageControl1;
+        private System.Windows.Forms.TabPage tabPage3;
+        private AutomaticReply.AutomaticReplyControl automaticReplyControl1;
     }
 }
 

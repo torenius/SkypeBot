@@ -224,6 +224,10 @@ namespace Server.SkypeStuff
         private void TriggerOnNewMessageEvent(ChatMessage cm)
         {
             MessageEvent me = new MessageEvent();
+            me.Sender = GetSkypeName(cm.Sender.Handle);
+            me.Message = cm.Body;
+            me.ChatCode = cm.Chat.Name;
+            Console.WriteLine(me);
             OnNewMessage(me);
         }
 

@@ -42,6 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutomaticReplyStuff\AutomaticReply.cs" />
+    <Compile Include="AutomaticReplyStuff\AutomaticReplyDB.cs" />
     <Compile Include="PeriodicMessageStuff\PeriodicMessage.cs" />
     <Compile Include="PeriodicMessageStuff\PeriodicMessageDB.cs" />
     <Compile Include="Program.cs" />

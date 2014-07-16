@@ -3,6 +3,7 @@ using Client.SkypeStuff;
 using SkypeBot.WCF;
 using System.Windows.Forms;
 using System;
+using Client.AutomaticReply;
 
 namespace Client
 {
@@ -10,6 +11,7 @@ namespace Client
     {
         private SkypeControl sc;
         private PeriodicMessageControl pm;
+        private AutomaticReplyControl ar;
         private ConnectToServer _cts;
 
         public Form1()
@@ -22,13 +24,14 @@ namespace Client
             tabControl1.TabPages[1].Text = "PeriodicMessage";
             pm = (PeriodicMessageControl)tabControl1.TabPages[1].Controls["periodicMessageControl1"];
 
+            tabControl1.TabPages[2].Text = "AutomaticReply";
+            ar = (AutomaticReplyControl)tabControl1.TabPages[2].Controls["automaticReplyControl1"];
+
             tabControl1.Selected += tabControl1_Selected;
 
             _cts = new ConnectToServer();
             _cts.ConnectCompleted += _cts_ConnectCompleted;
             _cts.StartConnect();
-
-            MessageBox.Show(Application.LocalUserAppDataPath);
         }
 
         /// <summary>
@@ -47,6 +50,12 @@ namespace Client
             else if (e.TabPageIndex == 1)
             {
                 pm.PopulatePeriodicMessageListbox();
+            }
+            // När användare klickar på AutomaticReply fliken
+            else if (e.TabPageIndex == 2)
+            {
+                ar.PopulateTriggerMessageList();
+                ar.UpdateInfoList();
             }
 
             Refresh();
@@ -76,6 +85,7 @@ namespace Client
             {
                 sc.SetSkypeHandler(sb);
                 pm.SetPeriodicMessage(sb);
+                ar.SetAutomaticReply(sb);
             }
         }
     }

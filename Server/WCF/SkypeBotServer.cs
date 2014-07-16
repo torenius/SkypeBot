@@ -1,5 +1,7 @@
-﻿using Server.PeriodicMessageStuff;
+﻿using Server.AutomaticReplyStuff;
+using Server.PeriodicMessageStuff;
 using Server.SkypeStuff;
+using SkypeBot.AutomaticReply;
 using SkypeBot.PeriodicMessage;
 using SkypeBot.SkypeStuff;
 using SkypeBot.WCF;
@@ -9,16 +11,29 @@ using System.ServiceModel;
 
 namespace Server.WCF
 {
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
+    [ServiceBehavior(
+        InstanceContextMode = InstanceContextMode.Single, 
+        IncludeExceptionDetailInFaults=true)]
     public class SkypeBotServer : ISkypeBot
     {
         private SkypeHandler _skypeHandler;
         private PeriodicMessage _periodicMessage;
+        private AutomaticReply _automaticReply;
 
         public SkypeBotServer()
         {
             _skypeHandler = new SkypeHandler();
             _periodicMessage = new PeriodicMessage(_skypeHandler);
+            _automaticReply = new AutomaticReply(_skypeHandler);
+        }
+
+        /// <summary>
+        /// Används för att test ifall man har anslutning till servern.
+        /// </summary>
+        /// <returns></returns>
+        public string ping()
+        {
+            return "pong";
         }
 
         /// <inheritdoc />
@@ -51,9 +66,28 @@ namespace Server.WCF
             return _periodicMessage.DeletePeriodicMessage(pms);
         }
 
-        public string ping()
+        /// <inheritdoc />
+        public List<AutomaticReplySetting> GetAllAutomaticReply()
         {
-            return "pong";
+            return _automaticReply.GetAllAutomaticReply();
+        }
+
+        /// <inheritdoc />
+        public string GetInfoList()
+        {
+            return _automaticReply.GetInfoList();
+        }
+
+        /// <inheritdoc />
+        public AutomaticReplySetting InsertUpdateAutomaticReply(AutomaticReplySetting ars)
+        {
+            return _automaticReply.InsertUpdateAutomaticReply(ars);
+        }
+
+        /// <inheritdoc />
+        public bool DeleteAutomaticReply(AutomaticReplySetting ars)
+        {
+            return _automaticReply.DeleteAutomaticReply(ars);
         }
     }
 }
