@@ -3,6 +3,7 @@ using SkypeBot.WCF;
 using System;
 using System.ServiceModel;
 
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
 namespace Server
 {
     class Program
@@ -13,7 +14,7 @@ namespace Server
                 typeof(SkypeBotServer), 
                 new Uri[] 
                 { 
-                    new Uri("net.tcp://localhost:14445") 
+                    new Uri("net.tcp://localhost:14445")
                 })
             )
             {
@@ -22,6 +23,8 @@ namespace Server
                 Console.WriteLine("Server is up...");
                 Console.ReadLine();
                 _host.Close();
+
+                
             }            
         }
     }

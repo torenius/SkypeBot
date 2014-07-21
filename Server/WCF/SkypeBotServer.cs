@@ -33,6 +33,7 @@ namespace Server.WCF
         /// <returns></returns>
         public string ping()
         {
+            Console.WriteLine("PingPong");
             return "pong";
         }
 

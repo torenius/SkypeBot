@@ -16,7 +16,7 @@ namespace Server.SkypeStuff
         }
 
         public LastMessage(string message)
-            : base()
+            : this()
         {
             Message = message;
         }

@@ -2,6 +2,7 @@
 using SkypeBot.SkypeStuff;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Server.SkypeStuff
 {
@@ -13,6 +14,7 @@ namespace Server.SkypeStuff
     /// </summary>
     public class SkypeHandler : ISkypeHandler
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private Skype _skype;
         private Dictionary<string, LastMessage> _lastMessages;
         private string _botUsername;
@@ -68,7 +70,9 @@ namespace Server.SkypeStuff
         {
             if (string.IsNullOrWhiteSpace(message)) return;
 
-            IsLastMessage(user, message);
+            if (IsLastMessage(user, message)) return;
+
+            SetLastMessage(user, message);
 
             // Ignorerar ifall något failar
             try
@@ -89,7 +93,9 @@ namespace Server.SkypeStuff
         {
             if (string.IsNullOrWhiteSpace(message)) return;
 
-            IsLastMessage(chat, message);
+            if (IsLastMessage(chat, message)) return;
+
+            SetLastMessage(chat, message);
 
             Chat c = GetSkypeChat(chat);
 
@@ -100,23 +106,40 @@ namespace Server.SkypeStuff
         }
 
         /// <summary>
-        /// Hjälpmetod för att se ifall ett meddelande var det sista som skrevs av boten i en chat.
+        /// Sätter senaste meddelandet som skrevs till chat.
         /// </summary>
-        /// <param name="chat">Chat eller username som det ska skickas till</param>
-        /// <param name="message">Meddelandet som ska skickas</param>
-        /// <returns>True om det är samma som sista, annars false</returns>
+        /// <param name="chat"></param>
+        /// <param name="message"></param>
+        private void SetLastMessage(string chat, string message)
+        {
+            if (string.IsNullOrWhiteSpace(chat) || string.IsNullOrWhiteSpace(message))
+            {
+                return;
+            }
+            _lastMessages[chat] = new LastMessage(message);
+        }
+
+        /// <summary>
+        /// Kontrollerar ifall ett meddelande var det sista som skrevs eller inte
+        /// </summary>
+        /// <param name="chat"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
         private bool IsLastMessage(string chat, string message)
         {
-            LastMessage lastMessage = null;
-            _lastMessages.TryGetValue(chat, out lastMessage);
-
-            if (lastMessage == null || !lastMessage.IsLastMessage(message))
+            if (string.IsNullOrWhiteSpace(chat) || string.IsNullOrWhiteSpace(message))
             {
-                _lastMessages[chat] = new LastMessage(message);
                 return false;
             }
 
-            return true;
+            LastMessage lastMessage = null;
+            _lastMessages.TryGetValue(chat, out lastMessage);
+
+            if (lastMessage != null)
+            {
+                return lastMessage.IsLastMessage(message);
+            }
+            return false;
         }
 
         /// <summary>
@@ -200,7 +223,7 @@ namespace Server.SkypeStuff
         /// <param name="Status">Fick man ett meddelande eller skickade vi det?</param>
         private void HandleSkypeMessage(ChatMessage pMessage, TChatMessageStatus Status)
         {
-            Console.WriteLine("Sender: " + pMessage.Sender.Handle + " Message: " + pMessage.Body);
+            log.Info("Sender: " + pMessage.Sender.Handle + " Message: " + pMessage.Body + " Status: " + Status.ToString());
 
             // Fått meddelande från annan part
             if (TChatMessageStatus.cmsReceived == Status)
@@ -210,9 +233,12 @@ namespace Server.SkypeStuff
             // Boten eller botens användare har skickat ett meddelande
             else if (TChatMessageStatus.cmsSent == Status)
             {
-                if(!IsLastMessage(pMessage.Chat.Name, pMessage.Body))
+                lock (_lastMessages)
                 {
-                    TriggerOnNewMessageEvent(pMessage);
+                    if (!IsLastMessage(pMessage.Chat.Name, pMessage.Body))
+                    {
+                        TriggerOnNewMessageEvent(pMessage);
+                    }
                 }
             }
         }

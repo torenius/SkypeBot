@@ -13,6 +13,7 @@ namespace Client
 {
     class ConnectToServer
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private BackgroundWorker _bw;
 
         /// <summary>
@@ -40,11 +41,11 @@ namespace Client
         /// <summary>
         /// Starta anslutningsförsök.
         /// </summary>
-        public void StartConnect()
+        public void StartConnect(Form owner)
         {
             if (!_bw.IsBusy)
             {
-                _bw.RunWorkerAsync();
+                _bw.RunWorkerAsync(owner);
             }
         }
 
@@ -59,6 +60,7 @@ namespace Client
         /// <param name="e"></param>
         private void _bw_DoWork(object sender, DoWorkEventArgs e)
         {
+            Form owner = e.Argument as Form;
             ISkypeBot sb = null;
             bool cancel;
             string connectionString = Properties.Settings.Default.WCFConnectionString;
@@ -66,12 +68,12 @@ namespace Client
             do{
                 cancel = false;
 
-                Console.WriteLine("Try to connect to: " + connectionString);
+                log.Info("Try to connect to: " + connectionString);
                 sb = StartWCFClient(connectionString);
 
                 if (sb == null)
                 {
-                    cancel = !ShowInputDialog(ref connectionString);
+                    cancel = !ShowInputDialog(owner, ref connectionString);
                 }
 
             }while(sb == null && !cancel && !_bw.CancellationPending);
@@ -91,23 +93,32 @@ namespace Client
         /// </summary>
         /// <param name="connectionString">In = värde som visas som senast försöket. Ut = värde användaren skrev i rutan.</param>
         /// <returns>True om användaren trycke på Retry, annars False.</returns>
-        private bool ShowInputDialog(ref string connectionString)
+        private bool ShowInputDialog(Form owner, ref string connectionString)
         {
-            using (InputDialog d = new InputDialog(
-                "Could not connect to server! Specify IP:Port",
-                connectionString, 
-                "Connect to server",
-                "Retry", 
-                "Abort"))
-            {
-                if (d.ShowDialog() == DialogResult.OK)
-                {
-                    connectionString = d.InputMessage;
-                    return true;
-                }
-            }
+            string temp = connectionString;
+            bool returnValue = false;
 
-            return false;
+            // Behöver starta dialogen i UI tråden annars fungerar inte owner delen.
+            owner.Invoke(new Action(() =>
+            {
+                using (InputDialog d = new InputDialog(
+                    owner,
+                    "Could not connect to server! Specify IP:Port",
+                    temp,
+                    "Connect to server",
+                    "Retry",
+                    "Abort"))
+                {
+                    if (d.ShowDialog() == DialogResult.OK)
+                    {
+                        temp = d.InputMessage;
+                        returnValue = true;
+                    }
+                }
+            }));
+            
+            connectionString = temp;
+            return returnValue;
         }
 
         /// <summary>
@@ -132,7 +143,7 @@ namespace Client
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                log.Error("Failed to connect to: " + connectionString, e);
                 return null;
             }
 

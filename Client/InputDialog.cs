@@ -12,27 +12,30 @@ namespace Client
 {
     public partial class InputDialog : Form
     {
-        public InputDialog()
+        public InputDialog(Form owner)
         {
             InitializeComponent();
             // Ifall användaren trycker på kryset så har vi rätt status.
             this.DialogResult = DialogResult.Cancel;
+
+            this.Owner = owner;
+            this.CenterToParent();
         }
 
-        public InputDialog(string message)
-            : this()
+        public InputDialog(Form owner, string message)
+            : this(owner)
         {
             MessageLabel.Text = message;
         }
 
-        public InputDialog(string message, string input)
-            : this(message)
+        public InputDialog(Form owner, string message, string input)
+            : this(owner, message)
         {
             InputBox.Text = input;            
         }
 
-        public InputDialog(string message, string input, string title, string okButton, string cancelButton)
-            : this(message, input)
+        public InputDialog(Form owner, string message, string input, string title, string okButton, string cancelButton)
+            : this(owner, message, input)
         {
             this.Text = title;
             OkButton.Text = okButton;
@@ -79,8 +82,11 @@ namespace Client
         /// <param name="e"></param>
         private void InputBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            this.DialogResult = DialogResult.OK;
-            this.Close();
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
         }
     }
 }

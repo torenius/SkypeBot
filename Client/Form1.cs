@@ -9,6 +9,7 @@ namespace Client
 {
     public partial class Form1 : Form
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private SkypeControl sc;
         private PeriodicMessageControl pm;
         private AutomaticReplyControl ar;
@@ -31,7 +32,9 @@ namespace Client
 
             _cts = new ConnectToServer();
             _cts.ConnectCompleted += _cts_ConnectCompleted;
-            _cts.StartConnect();
+            _cts.StartConnect(this);
+            
+            log.Info("The application have started.");
         }
 
         /// <summary>
@@ -70,12 +73,12 @@ namespace Client
         {
             if (e.Cancelled || e.Error != null)
             {
-                MessageBox.Show("Could not connect to server!\nClosing application.");
+                //MessageBox.Show(this, "Could not connect to server!\nClosing application.");
                 if (e.Error != null)
                 {
-                    Console.WriteLine("Connect to server error: " + e.Error.Message);
+                    log.Error("Connect to server error:", e.Error);
                 }
-                this.Close();
+                //this.Close();
                 return;
             }
 
@@ -86,6 +89,8 @@ namespace Client
                 sc.SetSkypeHandler(sb);
                 pm.SetPeriodicMessage(sb);
                 ar.SetAutomaticReply(sb);
+
+                log.Info("Established a connection with the server!");
             }
         }
     }

@@ -38,7 +38,6 @@ namespace Server.PeriodicMessageStuff
         /// <returns>List med alla meddelanden</returns>
         public List<PeriodicMessageSetting> GetAllPeriodicMessages()
         {
-            Console.WriteLine(" Count: " + _settings.Count);
             return _settings.Values.ToList();
         }
 
@@ -49,7 +48,6 @@ namespace Server.PeriodicMessageStuff
         /// <returns>Null om det misslyckas annars klassen (med id värde om ny post)</returns>
         public PeriodicMessageSetting InsertUpdatePeriodMessage(PeriodicMessageSetting pms)
         {
-            Console.WriteLine("InsertUpdate: " + pms.ToString() + " Count: " + _settings.Count);
             pms = _db.InsertUpdateDb(pms);
             if (pms != null && pms.PeriodicMessageId > 0)
             {
@@ -67,7 +65,6 @@ namespace Server.PeriodicMessageStuff
         /// <returns>Om det gick bra att ta bort eller itne.</returns>
         public bool DeletePeriodicMessage(PeriodicMessageSetting pms)
         {
-            Console.WriteLine("Delete: " + pms.ToString() + " Count: " + _settings.Count);
             if (pms == null || pms.PeriodicMessageId == -1)
             {
                 return false;
@@ -108,7 +105,7 @@ namespace Server.PeriodicMessageStuff
             if (t == null && pm.IsActive)
             {
                 // Skapar timern och startar den.
-                t = new Timer(HandleEventTime, pm, pm.DueTime * 1000, pm.Period * 1000);
+                t = new Timer(HandleEventTime, pm, Math.Max(pm.DueTime * 1000, 0), Math.Max(pm.Period * 1000, -1));
                 _timers[periodicMessageId] = t;
             }
             // Om meddelandet inte är aktivt så stänger vi av timern.
