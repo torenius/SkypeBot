@@ -34,4 +34,4 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 // Den här raden blir automatiskt uppdaterad av ett build script och ökar Build med 1 för varje gång.
-[assembly: AssemblyFileVersion("1.0.6.0")]
+[assembly: AssemblyFileVersion("1.0.7.0")]

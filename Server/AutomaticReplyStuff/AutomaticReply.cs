@@ -41,7 +41,7 @@ namespace Server.AutomaticReplyStuff
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("Will be replaced in reply:");
-            sb.AppendLine("%s - Senders name");
+            sb.AppendLine("%sn - Senders name");
 
             return sb.ToString();
         }
@@ -101,7 +101,7 @@ namespace Server.AutomaticReplyStuff
                 return;
             }
 
-            string reply = ars.ReplyMessage.Replace("%s", e.Sender);
+            string reply = ars.ReplyMessage.Replace("%sn", e.Sender);
 
             _skype.SendChatMessage(e.ChatCode, reply);
         }

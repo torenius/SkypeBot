@@ -32,7 +32,6 @@
             this.TriggerMessageList = new System.Windows.Forms.ListBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.DeleteButton = new System.Windows.Forms.Button();
-            this.UpdateButton = new System.Windows.Forms.Button();
             this.NewButton = new System.Windows.Forms.Button();
             this.ReplyBox = new System.Windows.Forms.RichTextBox();
             this.ReplyLabel = new System.Windows.Forms.Label();
@@ -85,7 +84,6 @@
             // splitContainer2.Panel1
             // 
             this.splitContainer2.Panel1.Controls.Add(this.DeleteButton);
-            this.splitContainer2.Panel1.Controls.Add(this.UpdateButton);
             this.splitContainer2.Panel1.Controls.Add(this.NewButton);
             this.splitContainer2.Panel1.Controls.Add(this.ReplyBox);
             this.splitContainer2.Panel1.Controls.Add(this.ReplyLabel);
@@ -109,25 +107,15 @@
             this.DeleteButton.UseVisualStyleBackColor = true;
             this.DeleteButton.Click += new System.EventHandler(this.DeleteButton_Click);
             // 
-            // UpdateButton
-            // 
-            this.UpdateButton.Location = new System.Drawing.Point(86, 196);
-            this.UpdateButton.Name = "UpdateButton";
-            this.UpdateButton.Size = new System.Drawing.Size(75, 23);
-            this.UpdateButton.TabIndex = 12;
-            this.UpdateButton.Text = "Update";
-            this.UpdateButton.UseVisualStyleBackColor = true;
-            this.UpdateButton.Click += new System.EventHandler(this.UpdateButton_Click);
-            // 
             // NewButton
             // 
             this.NewButton.Location = new System.Drawing.Point(5, 196);
             this.NewButton.Name = "NewButton";
-            this.NewButton.Size = new System.Drawing.Size(75, 23);
+            this.NewButton.Size = new System.Drawing.Size(85, 23);
             this.NewButton.TabIndex = 11;
-            this.NewButton.Text = "New";
+            this.NewButton.Text = "New/Update";
             this.NewButton.UseVisualStyleBackColor = true;
-            this.NewButton.Click += new System.EventHandler(this.NewButton_Click);
+            this.NewButton.Click += new System.EventHandler(this.NewUpdateButton_Click);
             // 
             // ReplyBox
             // 
@@ -201,7 +189,6 @@
         private System.Windows.Forms.ListBox TriggerMessageList;
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.Button DeleteButton;
-        private System.Windows.Forms.Button UpdateButton;
         private System.Windows.Forms.Button NewButton;
         private System.Windows.Forms.RichTextBox ReplyBox;
         private System.Windows.Forms.Label ReplyLabel;
